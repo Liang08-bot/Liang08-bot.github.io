@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LGAME - Game Developer</title>
+<meta name="description" content="LGAME - 游戏开发者个人作品集。C++ OpenGL 体素引擎、Python 象棋游戏、贪吃蛇等作品展示，致敬科技先驱，鼓励编程入门。">
+<meta name="keywords" content="游戏开发,C++,OpenGL,Python,体素引擎,Minecraft,象棋,贪吃蛇,个人作品集,编程入门">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="LGAME - Game Developer">
+<meta property="og:description" content="游戏开发与底层技术探索者的个人作品集">
+<meta property="og:type" content="website">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #13131a;
+    --text: #c8c8d4;
+    --text-dim: #6b6b7b;
+    --accent: #00e5a0;
+    --accent-glow: rgba(0, 229, 160, 0.15);
+    --border: #1e1e2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ---- 背景粒子 ---- */
+  #particles {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ---- 导航 ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(12px);
+    background: rgba(10,10,15,0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem; font-weight: 700; color: var(--accent);
+    letter-spacing: 2px;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--text-dim); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ---- 通用 ---- */
+  section {
+    position: relative; z-index: 1;
+    max-width: 880px; margin: 0 auto; padding: 100px 24px;
+  }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; color: var(--accent); text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 12px;
+  }
+  h2 { font-size: 2rem; font-weight: 700; margin-bottom: 32px; color: #e8e8f0; }
+
+  /* ---- Hero ---- */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; padding-top: 80px;
+  }
+  #hero .greeting {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; color: var(--accent); margin-bottom: 16px;
+  }
+  #hero h1 {
+    font-size: 3.8rem; font-weight: 700; line-height: 1.15;
+    color: #f0f0f8; margin-bottom: 20px;
+  }
+  #hero h1 span { color: var(--accent); }
+  #hero .subtitle {
+    font-size: 1.15rem; color: var(--text-dim); max-width: 500px; margin-bottom: 36px;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px; border-radius: 8px; font-size: 0.95rem;
+    text-decoration: none; font-weight: 500; cursor: pointer;
+    transition: all 0.25s; border: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: #0a0a0f;
+  }
+  .btn-primary:hover { box-shadow: 0 0 28px var(--accent-glow); transform: translateY(-1px); }
+  .btn-outline {
+    border: 1px solid var(--border); color: var(--text);
+    background: transparent;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- About ---- */
+  #about p { color: var(--text-dim); margin-bottom: 16px; max-width: 640px; font-size: 1.02rem; }
+
+  /* ---- Projects ---- */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .project-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: default; text-decoration: none; color: inherit; display: block;
+  }
+  .project-card:hover {
+    border-color: var(--accent); transform: translateY(-4px);
+  }
+  .project-card.downloadable { cursor: pointer; }
+  .project-card.downloadable:hover { border-color: #ff6b35; }
+  .project-card .dl-hint {
+    display: none; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: #ff6b35; margin-top: 8px;
+  }
+  .project-card.downloadable:hover .dl-hint { display: block; }
+  .project-icon { font-size: 2rem; margin-bottom: 16px; }
+  .project-card h3 { font-size: 1.15rem; margin-bottom: 8px; color: #e0e0ec; }
+  .project-card .tech {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; color: var(--accent); margin-bottom: 10px;
+  }
+  .project-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
+
+  /* ---- Skills ---- */
+  .skills-container {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .skill-tag {
+    padding: 8px 18px; border-radius: 20px;
+    border: 1px solid var(--border); font-size: 0.85rem;
+    color: var(--text-dim); transition: all 0.2s;
+    font-family: 'JetBrains Mono', monospace;
+    text-decoration: none; display: inline-block;
+  }
+  .skill-tag:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: var(--accent-glow);
+  }
+
+  /* ---- People ---- */
+  .people-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 20px;
+  }
+  .person-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px;
+    display: flex; gap: 20px; align-items: flex-start;
+    transition: border-color 0.3s;
+    text-decoration: none; color: inherit;
+  }
+  .person-card:hover { border-color: var(--accent); }
+  .person-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem; font-weight: 700; color: var(--accent);
+    opacity: 0.3; line-height: 1;
+  }
+  .person-info h4 {
+    color: #e0e0ec; font-size: 1.05rem; margin-bottom: 4px;
+  }
+  .person-info .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--accent); margin-bottom: 8px;
+  }
+  .person-info p {
+    color: var(--text-dim); font-size: 0.85rem; line-height: 1.55;
+  }
+
+  /* ---- 敬请期待 ---- */
+  .more-coming {
+    text-align: center; margin-top: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; color: var(--accent);
+    opacity: 0.5; letter-spacing: 2px;
+  }
+
+  /* ---- Code Yourself ---- */
+  .code-yourself {
+    text-align: center;
+  }
+  .code-yourself .cta-text {
+    color: var(--text-dim); font-size: 1rem; margin-bottom: 24px;
+  }
+  .code-yourself .cta-text span {
+    color: var(--accent); font-weight: 600;
+  }
+  .code-links {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 12px;
+  }
+  .code-link {
+    padding: 10px 22px; border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text-dim); text-decoration: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .code-link:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: var(--accent-glow);
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center; padding: 48px 24px;
+    color: var(--text-dim); font-size: 0.85rem; z-index: 1; position: relative;
+  }
+  footer .accent { color: var(--accent); }
+
+  /* ---- 响应式 ---- */
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
+    .nav-links { gap: 16px; }
+    #hero h1 { font-size: 2.4rem; }
+    section { padding: 64px 18px; }
+  }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'563ad07624bd4ca79caaadfb1423e077'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+
+<!-- 粒子背景 -->
+<canvas id="particles"></canvas>
+
+<!-- 导航 -->
+<nav>
+  <div class="nav-logo">&lt;LGAME /&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#projects">项目</a></li>
+    <li><a href="#skills">技能</a></li>
+    <li><a href="#people">人物</a></li>
+    <li><a href="#code">编程</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <p class="greeting">👋 Hi, my name is</p>
+  <h1>Game Dev &<br><span>Engine Hacker</span></h1>
+  <p class="subtitle">
+    游戏开发者，痴迷底层系统与图形编程。用 C++ 和 OpenGL 构建世界，用好奇心探索引擎架构与计算机原理。
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">查看项目</a>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <p class="section-tag">/ projects</p>
+  <h2>项目作品</h2>
+  <div class="projects-grid">
+
+    <a href="Minecraft1.1.zip" class="project-card downloadable" download>
+      <div class="project-icon">⛏️</div>
+      <h3>Minecraft 克隆</h3>
+      <p class="tech">C++ · OpenGL · GLSL</p>
+      <p>
+        自制体素引擎，60Hz 独立物理步长 + 75Hz 渲染帧率分离。
+        完整水流系统：玩家推力、深度 1-8 流速变化、无限水源与瀑布效果。
+      </p>
+      <p class="dl-hint">⬇ 点击下载 (5.7MB)</p>
+    </a>
+
+    <a href="中国象棋.zip" class="project-card downloadable" download>
+      <div class="project-icon">♟️</div>
+      <h3>中国象棋</h3>
+      <p class="tech">Python · Pygame</p>
+      <p>
+        基于 pygame 的完整中国象棋游戏，包含棋规判定、走法生成、AI 对战等核心功能。
+      </p>
+      <p class="dl-hint">⬇ 点击下载 (27MB)</p>
+    </a>
+
+    <a href="国际象棋.zip" class="project-card downloadable" download>
+      <div class="project-icon">♔</div>
+      <h3>国际象棋</h3>
+      <p class="tech">Python · Pygame</p>
+      <p>
+        基于 pygame 的国际象棋游戏，支持标准棋规、走法合法性判定、简单 AI 对战。
+      </p>
+      <p class="dl-hint">⬇ 点击下载 (27MB)</p>
+    </a>
+
+    <a href="https://www.netquake.io/" class="project-card" target="_blank" rel="noopener">
+      <div class="project-icon">🌐</div>
+      <h3>NetQuake</h3>
+      <p class="tech">WebAssembly · WebGL · Quake</p>
+      <p>
+        在浏览器中运行经典 Quake。基于 WebAssembly 和 WebGL 实现 FPS 引擎跨平台移植，支持多人联机对战。
+      </p>
+    </a>
+
+    <a href="snake.html" class="project-card" target="_blank" rel="noopener">
+      <div class="project-icon">🐍</div>
+      <h3>贪吃蛇</h3>
+      <p class="tech">HTML · Canvas · JavaScript</p>
+      <p>
+        经典贪吃蛇游戏，纯浏览器运行无需安装。支持键盘操作、得分记录、最高分持久化存储。
+      </p>
+    </a>
+
+
+  </div>
+  <p class="more-coming">// more coming soon ...</p>
+</section>
+
+<!-- Skills -->
+<section id="skills">
+  <p class="section-tag">/ skills</p>
+  <h2>技术栈</h2>
+  <div class="skills-container">
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=C%2B%2B" target="_blank" rel="noopener">C++</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=OpenGL" target="_blank" rel="noopener">OpenGL</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=GLSL" target="_blank" rel="noopener">GLSL</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=Python" target="_blank" rel="noopener">Python</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=Pygame" target="_blank" rel="noopener">Pygame</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=C%E8%AF%AD%E8%A8%80" target="_blank" rel="noopener">C</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=Game+Physics" target="_blank" rel="noopener">Game Physics</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=GLM" target="_blank" rel="noopener">GLM</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=GLFW" target="_blank" rel="noopener">GLFW</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=ImGui" target="_blank" rel="noopener">ImGui</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=Git" target="_blank" rel="noopener">Git</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=CMake" target="_blank" rel="noopener">CMake</a>
+    <a class="skill-tag" href="https://www.baidu.com/s?wd=Windows+Dev" target="_blank" rel="noopener">Windows Dev</a>
+    <a class="skill-tag" href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <p class="more-coming">// more coming soon ...</p>
+</section>
+
+<!-- People -->
+<section id="people">
+  <p class="section-tag">/ people</p>
+  <h2>致敬先驱</h2>
+  <div class="people-grid">
+
+    <a class="person-card" href="https://www.baidu.com/s?wd=John+Carmack" target="_blank" rel="noopener">
+      <div class="person-num">01</div>
+      <div class="person-info">
+        <h4>约翰·卡马克</h4>
+        <p class="role">id Software 联合创始人 · 3D 图形先驱</p>
+        <p>自学编程的天才，创造了 Doom 和 Quake 系列，奠定了现代 FPS 游戏与实时 3D 渲染的基础。后加入 Oculus 任 CTO，推动 VR 技术发展。</p>
+      </div>
+    </a>
+
+    <a class="person-card" href="https://www.baidu.com/s?wd=George+Hotz" target="_blank" rel="noopener">
+      <div class="person-num">02</div>
+      <div class="person-info">
+        <h4>乔治·霍兹</h4>
+        <p class="role">知名黑客 · comma.ai 创始人</p>
+        <p>17 岁成为全球首个解锁 iPhone 的人，后又破解 PS3。创办 comma.ai，以低成本硬件方案挑战自动驾驶巨头，信奉「用代码撬动世界」。</p>
+      </div>
+    </a>
+
+    <a class="person-card" href="https://www.baidu.com/s?wd=Steve+Jobs" target="_blank" rel="noopener">
+      <div class="person-num">03</div>
+      <div class="person-info">
+        <h4>史蒂夫·乔布斯</h4>
+        <p class="role">Apple 联合创始人 · 产品哲学大师</p>
+        <p>缔造了 Mac、iPhone、iPad 等划时代产品,将技术与人文极致融合。被逐出 Apple 后创办 NeXT 和 Pixar，重返后带领 Apple 走向巅峰。</p>
+      </div>
+    </a>
+
+    <a class="person-card" href="https://www.baidu.com/s?wd=Mark+Zuckerberg" target="_blank" rel="noopener">
+      <div class="person-num">04</div>
+      <div class="person-info">
+        <h4>马克·扎克伯格</h4>
+        <p class="role">Meta 创始人 · 社交网络变革者</p>
+        <p>哈佛宿舍里写出 Facebook，重新定义了全球社交方式。后全力押注元宇宙，将公司更名为 Meta，推动 VR/AR 生态建设。</p>
+      </div>
+    </a>
+
+    <a class="person-card" href="https://www.baidu.com/s?wd=胡渊鸣" target="_blank" rel="noopener">
+      <div class="person-num">05</div>
+      <div class="person-info">
+        <h4>胡渊鸣</h4>
+        <p class="role">太极（Taichi）作者 · 图形计算先锋</p>
+        <p>清华姚班毕业，MIT 博士。创造了太极编程语言，用 Python 即可编写高性能图形计算程序，99 行代码实现「冰雪奇缘」。后创立太极图形，推动国产图形基础设施。</p>
+      </div>
+    </a>
+
+  </div>
+  <p class="more-coming">// more coming soon ...</p>
+</section>
+
+<!-- Code -->
+<section id="code" class="code-yourself">
+  <p class="section-tag">/ code</p>
+  <h2>你也来写程序</h2>
+  <p class="cta-text">
+    编程一点都不神秘。<span>从零开始，每个人都能创造自己的世界。</span>
+  </p>
+  <div class="code-links">
+    <a class="code-link" href="https://www.baidu.com/s?wd=Python入门教程" target="_blank" rel="noopener">Python 入门</a>
+    <a class="code-link" href="https://www.baidu.com/s?wd=C%2B%2B游戏开发教程" target="_blank" rel="noopener">C++ 游戏开发</a>
+    <a class="code-link" href="https://www.baidu.com/s?wd=OpenGL教程" target="_blank" rel="noopener">OpenGL 图形学</a>
+    <a class="code-link" href="https://www.baidu.com/s?wd=CS50哈佛编程课" target="_blank" rel="noopener">CS50 经典课程</a>
+    <a class="code-link" href="https://www.baidu.com/s?wd=LeetCode刷题" target="_blank" rel="noopener">LeetCode 刷题</a>
+    <a class="code-link" href="https://www.baidu.com/s?wd=GitHub开源项目" target="_blank" rel="noopener">GitHub 开源</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>Built with <span class="accent">&lt;3</span> &mdash; 2026 LGAME</p>
+</footer>
+
+<script>
+// ---- 二进制粒子背景 ----
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const COUNT = 80;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+  constructor() {
+    this.y = Math.random() * canvas.height;
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = -10;
+    this.speed = Math.random() * 0.4 + 0.15;
+    this.opacity = Math.random() * 0.4 + 0.08;
+    this.char = Math.random() < 0.5 ? '0' : '1';
+  }
+  update() {
+    this.y += this.speed;
+    if (this.y > canvas.height + 10) this.reset();
+  }
+  draw(ctx) {
+    ctx.font = '12px "JetBrains Mono", monospace';
+    ctx.fillStyle = `rgba(0,229,160,${this.opacity})`;
+    ctx.fillText(this.char, this.x, this.y);
+  }
+}
+
+for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(ctx); });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
