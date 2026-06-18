@@ -11,7 +11,6 @@
 <meta property="og:description" content="游戏开发与底层技术探索者的个人作品集">
 <meta property="og:type" content="website">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;600;700&display=swap');
 
   :root {
     --bg: #0a0a0f;
@@ -30,7 +29,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Noto Sans SC', sans-serif;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
     line-height: 1.7;
     overflow-x: hidden;
   }
@@ -51,7 +50,7 @@
     border-bottom: 1px solid var(--border);
   }
   .nav-logo {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 1.1rem; font-weight: 700; color: var(--accent);
     letter-spacing: 2px;
   }
@@ -68,7 +67,7 @@
     max-width: 880px; margin: 0 auto; padding: 100px 24px;
   }
   .section-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 0.75rem; color: var(--accent); text-transform: uppercase;
     letter-spacing: 3px; margin-bottom: 12px;
   }
@@ -80,7 +79,7 @@
     justify-content: center; padding-top: 80px;
   }
   #hero .greeting {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 0.85rem; color: var(--accent); margin-bottom: 16px;
   }
   #hero h1 {
@@ -128,6 +127,12 @@
     border-color: var(--accent); transform: translateY(-4px);
   }
   .project-card.downloadable { cursor: pointer; }
+  .project-thumb {
+    width: 100%; height: 140px; border-radius: 8px; margin-bottom: 16px;
+    background-size: cover; background-position: center;
+    border: 1px solid var(--border);
+  }
+  .project-card:hover .project-thumb { border-color: var(--accent); }
   .project-card.downloadable:hover { border-color: #ff6b35; }
   .project-card .dl-hint {
     display: none; font-family: 'JetBrains Mono', monospace;
@@ -137,7 +142,7 @@
   .project-icon { font-size: 2rem; margin-bottom: 16px; }
   .project-card h3 { font-size: 1.15rem; margin-bottom: 8px; color: #e0e0ec; }
   .project-card .tech {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 0.75rem; color: var(--accent); margin-bottom: 10px;
   }
   .project-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
@@ -150,7 +155,7 @@
     padding: 8px 18px; border-radius: 20px;
     border: 1px solid var(--border); font-size: 0.85rem;
     color: var(--text-dim); transition: all 0.2s;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     text-decoration: none; display: inline-block;
   }
   .skill-tag:hover {
@@ -172,7 +177,7 @@
   }
   .person-card:hover { border-color: var(--accent); }
   .person-num {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 2rem; font-weight: 700; color: var(--accent);
     opacity: 0.3; line-height: 1;
   }
@@ -180,17 +185,53 @@
     color: #e0e0ec; font-size: 1.05rem; margin-bottom: 4px;
   }
   .person-info .role {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 0.72rem; color: var(--accent); margin-bottom: 8px;
   }
   .person-info p {
     color: var(--text-dim); font-size: 0.85rem; line-height: 1.55;
   }
 
+  /* ---- Releases ---- */
+  .latest-badge {
+    display: inline-block; background: var(--accent); color: #0a0a0f;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 0.7rem; padding: 2px 10px; border-radius: 4px;
+    margin-bottom: 12px; letter-spacing: 1px;
+  }
+  .release-hero {
+    background: var(--bg-card); border: 1px solid var(--accent);
+    border-radius: 14px; padding: 32px; margin-bottom: 16px;
+    transition: border-color 0.3s;
+  }
+  .release-hero h3 { color: var(--text); font-size: 1.2rem; margin-bottom: 6px; }
+  .release-hero .date {
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 0.75rem; color: var(--accent); margin-bottom: 10px;
+  }
+  .release-hero p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; margin-bottom: 14px; }
+  .release-hero .btn {
+    display: inline-block; padding: 8px 22px; font-size: 0.85rem;
+  }
+  .rel-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .rel-item {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+  }
+  .rel-item h4 { color: var(--text); font-size: 0.95rem; margin-bottom: 4px; }
+  .rel-item .date {
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 0.7rem; color: var(--text-dim); margin-bottom: 8px;
+  }
+  .rel-item p { color: var(--text-dim); font-size: 0.8rem; line-height: 1.5; }
+
   /* ---- 敬请期待 ---- */
   .more-coming {
     text-align: center; margin-top: 28px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Cascadia Code", "Consolas", monospace;
     font-size: 0.8rem; color: var(--accent);
     opacity: 0.5; letter-spacing: 2px;
   }
@@ -212,7 +253,7 @@
   .code-link {
     padding: 10px 22px; border: 1px solid var(--border);
     border-radius: 8px; color: var(--text-dim); text-decoration: none;
-    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    font-family: "Cascadia Code", "Consolas", monospace; font-size: 0.85rem;
     transition: all 0.2s;
   }
   .code-link:hover {
@@ -266,7 +307,9 @@
 <nav>
   <div class="nav-logo">&lt;LGAME /&gt;</div>
   <ul class="nav-links">
+    <li><a href="#releases">发布</a></li>
     <li><a href="#projects">项目</a></li>
+    <li><a href="#source">源码</a></li>
     <li><a href="#skills">技能</a></li>
     <li><a href="#people">人物</a></li>
     <li><a href="#code">编程</a></li>
@@ -285,13 +328,85 @@
   </div>
 </section>
 
+<!-- Releases -->
+<section id="releases">
+  <p class="section-tag">/ releases</p>
+  <h2>发布记录</h2>
+
+  <!-- 最新发布 -->
+  <p class="latest-badge">NEW</p>
+  <div class="release-hero">
+    <h3>国际象棋 · 极简 UI 全面重构</h3>
+    <p class="date">2026.06.07</p>
+    <p>
+      暗色绿调配色方案，渐变背景+徽标标题，右侧面板时钟卡片化，双列历史面板。从原型到终版连续迭代 6 轮细节打磨。
+    </p>
+  </div>
+
+  <!-- 之前发布 -->
+  <p class="section-tag" style="font-size:0.7rem;margin-top:32px;">/ previous</p>
+  <div class="rel-grid">
+
+    <div class="rel-item">
+      <h4>国际象棋 · 极简 UI 重构</h4>
+      <p class="date">2026.06.07</p>
+      <p>全新暗色绿调配色，渐变菜单背景，双列历史面板，连续迭代 6 版。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>Watt Toolkit · 添加到项目</h4>
+      <p class="date">2026.06.07</p>
+      <p>推荐给所有国内开发者的一站式网络加速工具卡。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>人物栏扩容</h4>
+      <p class="date">2026.06.07</p>
+      <p>新增比尔·盖茨卡片，致敬先驱增至 6 人。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>编程源码栏上线</h4>
+      <p class="date">2026.06.07</p>
+      <p>中国象棋 + 国际象棋 Python 源码直接下载，60KB 和 52KB。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>超级马里奥 · 加入项目</h4>
+      <p class="date">2026.05.31</p>
+      <p>NES 模拟网页版，32 关卡可选，带关卡编辑器。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>Minecraft 1.2 · DLL 全内置</h4>
+      <p class="date">2026.06.07</p>
+      <p>VC 运行时 DLL 打包进 zip，解压即玩，客户不再报错。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>中国象棋 · 首次发布</h4>
+      <p class="date">2026.05.24</p>
+      <p>PyInstaller 打包为独立 exe，免依赖运行。</p>
+    </div>
+
+    <div class="rel-item">
+      <h4>LGAME 网站 · 正式上线</h4>
+      <p class="date">2026.05.24</p>
+      <p>GitHub Pages + CloudStudio 双线部署，二进制粒子背景，致敬先驱。</p>
+    </div>
+
+  </div>
+  <p class="more-coming">// more coming soon ...</p>
+</section>
+
 <!-- Projects -->
 <section id="projects">
   <p class="section-tag">/ projects</p>
   <h2>项目作品</h2>
   <div class="projects-grid">
 
-    <a href="Minecraft1.1.zip" class="project-card downloadable" download>
+    <a href="Minecraft1.2.zip" class="project-card downloadable" download>
+      <div class="project-thumb" style="background:linear-gradient(180deg,#7ec850 0%,#5a8e22 55%,#8b6914 55.5%,#6b5a3a 100%)"></div>
       <div class="project-icon">⛏️</div>
       <h3>Minecraft 克隆</h3>
       <p class="tech">C++ · OpenGL · GLSL</p>
@@ -299,11 +414,12 @@
         自制体素引擎，60Hz 独立物理步长 + 75Hz 渲染帧率分离。
         完整水流系统：玩家推力、深度 1-8 流速变化、无限水源与瀑布效果。
       </p>
-      <p class="dl-hint">⬇ 点击下载 (5.7MB)</p>
+      <p class="dl-hint">⬇ 点击下载 (5.9MB) · 解压后双击「启动游戏.bat」</p>
     </a>
 
     <a href="中国象棋.zip" class="project-card downloadable" download>
-      <div class="project-icon">♟️</div>
+      <div class="project-thumb" style="background:linear-gradient(135deg,#8b4513 0%,#d4a574 30%,#f0d5b0 50%,#d4a574 70%,#8b4513 100%)"></div>
+      <div class="project-icon">🏮</div>
       <h3>中国象棋</h3>
       <p class="tech">Python · Pygame</p>
       <p>
@@ -313,6 +429,7 @@
     </a>
 
     <a href="国际象棋.zip" class="project-card downloadable" download>
+      <div class="project-thumb" style="background:linear-gradient(45deg,#2f3e30 0%,#3a4d3b 50%,#1a1f1a 100%)"></div>
       <div class="project-icon">♔</div>
       <h3>国际象棋</h3>
       <p class="tech">Python · Pygame</p>
@@ -323,6 +440,7 @@
     </a>
 
     <a href="https://www.netquake.io/" class="project-card" target="_blank" rel="noopener">
+      <div class="project-thumb" style="background:radial-gradient(ellipse at 30% 30%,#445566,#0f1a2e)"></div>
       <div class="project-icon">🌐</div>
       <h3>NetQuake</h3>
       <p class="tech">WebAssembly · WebGL · Quake</p>
@@ -332,6 +450,7 @@
     </a>
 
     <a href="snake.html" class="project-card" target="_blank" rel="noopener">
+      <div class="project-thumb" style="background:linear-gradient(0deg,#0a1a0a,#0d220d);background-image:radial-gradient(#0f3 1px,transparent 1px);background-size:20px 20px"></div>
       <div class="project-icon">🐍</div>
       <h3>贪吃蛇</h3>
       <p class="tech">HTML · Canvas · JavaScript</p>
@@ -341,6 +460,7 @@
     </a>
 
     <a href="https://mariogame.org/zh/" class="project-card" target="_blank" rel="noopener">
+      <div class="project-thumb" style="background:linear-gradient(0deg,#5c94fc,#a4c8fc)"></div>
       <div class="project-icon">🍄</div>
       <h3>超级马里奥</h3>
       <p class="tech">HTML5 · Canvas · NES 模拟</p>
@@ -349,6 +469,49 @@
       </p>
     </a>
 
+    <a href="https://apps.microsoft.com/detail/9mtcfhs560ng?hl=zh-cn&gl=cn" class="project-card" target="_blank" rel="noopener">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)"></div>
+      <div class="project-icon">⚡</div>
+      <h3>Watt Toolkit</h3>
+      <p class="tech">C# · .NET · 网络加速</p>
+      <p>
+        Steam++ 改名而来，一站式开发者网络加速工具。支持 GitHub、Steam 等服务的本地代理加速，必备开发利器。
+      </p>
+    </a>
+
+
+  </div>
+  <p class="more-coming">// more coming soon ...</p>
+</section>
+
+<!-- Source Code -->
+<section id="source">
+  <p class="section-tag">/ source</p>
+  <h2>编程源码</h2>
+  <p class="subtitle" style="text-align:center;margin-top:6px;">可直接阅读的 Python 源文件，运行需安装 pygame + numpy</p>
+  <div class="projects-grid" style="margin-top:24px;">
+
+    <a href="Chinese_chess.py" class="project-card downloadable" download>
+      <div class="project-thumb" style="background:#1a1a2e;display:flex;align-items:center;justify-content:center"><span style="font-size:40px;opacity:.4">&#128220;</span></div>
+      <div class="project-icon">📜</div>
+      <h3>中国象棋 · 源码</h3>
+      <p class="tech">Python · Pygame · 60KB</p>
+      <p>
+        完整中国象棋源码，包含棋盘渲染、棋规判定、走法生成、AI 对战等核心模块。
+      </p>
+      <p class="dl-hint">⬇ 下载源码</p>
+    </a>
+
+    <a href="international_chess.py" class="project-card downloadable" download>
+      <div class="project-thumb" style="background:#1a2e1a;display:flex;align-items:center;justify-content:center"><span style="font-size:40px;opacity:.4">&#128220;</span></div>
+      <div class="project-icon">📜</div>
+      <h3>国际象棋 · 源码</h3>
+      <p class="tech">Python · Pygame · 52KB</p>
+      <p>
+        3D 立体棋子、音效合成、AI 对战、棋钟系统——单文件 1300 行完整实现。
+      </p>
+      <p class="dl-hint">⬇ 下载源码</p>
+    </a>
 
   </div>
   <p class="more-coming">// more coming soon ...</p>
@@ -428,6 +591,15 @@
       </div>
     </a>
 
+    <a class="person-card" href="https://www.baidu.com/s?wd=Bill+Gates" target="_blank" rel="noopener">
+      <div class="person-num">06</div>
+      <div class="person-info">
+        <h4>比尔·盖茨</h4>
+        <p class="role">Microsoft 创始人 · 软件帝国缔造者</p>
+        <p>13 岁开始编程，哈佛辍学创立微软，用 Windows 定义了个人电脑时代。后投身慈善，基金会推动全球健康与教育。</p>
+      </div>
+    </a>
+
   </div>
   <p class="more-coming">// more coming soon ...</p>
 </section>
@@ -452,9 +624,20 @@
 <!-- Footer -->
 <footer>
   <p>Built with <span class="accent">&lt;3</span> &mdash; 2026 LGAME</p>
+  <p style="margin-top:8px;font-size:0.75rem;color:var(--text-dim);">
+    访客 <span id="visitorCount" style="color:var(--accent);">...</span>
+  </p>
 </footer>
 
 <script>
+// ---- 访客统计 ----
+(function(){
+  const KEY = 'lgame_visitor_count';
+  let count = parseInt(localStorage.getItem(KEY) || '0') + 1;
+  localStorage.setItem(KEY, count);
+  document.getElementById('visitorCount').textContent = count;
+})();
+
 // ---- 二进制粒子背景 ----
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
@@ -485,7 +668,7 @@ class Particle {
     if (this.y > canvas.height + 10) this.reset();
   }
   draw(ctx) {
-    ctx.font = '12px "JetBrains Mono", monospace';
+    ctx.font = '12px "Cascadia Code", "Consolas", monospace';
     ctx.fillStyle = `rgba(0,229,160,${this.opacity})`;
     ctx.fillText(this.char, this.x, this.y);
   }
