@@ -61,6 +61,33 @@
   }
   .nav-links a:hover { color: var(--accent); }
 
+  /* ---- 汉堡菜单 ---- */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; z-index: 101;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--text); transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,15,0.97); z-index: 99;
+    flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--text); text-decoration: none; font-size: 1.4rem;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--accent); }
+
   /* ---- 通用 ---- */
   section {
     position: relative; z-index: 1;
@@ -268,10 +295,33 @@
   }
   footer .accent { color: var(--accent); }
 
+  /* ---- 打字机光标 ---- */
+  .type-cursor::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    color: var(--accent);
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ---- 滚动渐入 ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* ---- 响应式 ---- */
   @media (max-width: 640px) {
     nav { padding: 14px 20px; }
-    .nav-links { gap: 16px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
     #hero h1 { font-size: 2.4rem; }
     section { padding: 64px 18px; }
   }
@@ -293,7 +343,7 @@
       'url':location.href,
       'referrer':document.referrer,
       'title':document.title,
-      'sandbox_id':'563ad07624bd4ca79caaadfb1423e077'
+      'sandbox_id':'56d0da1a569c4cfb8f6cf20bdbe54d6a'
     });
   }catch(e){}
 })();
@@ -313,24 +363,35 @@
     <li><a href="#skills">技能</a></li>
     <li><a href="#people">人物</a></li>
     <li><a href="#code">编程</a></li>
+    <li><a href="#forum">论坛</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#releases">发布</a>
+  <a href="#projects">项目</a>
+  <a href="#source">源码</a>
+  <a href="#skills">技能</a>
+  <a href="#people">人物</a>
+  <a href="#code">编程</a>
+  <a href="#forum">论坛</a>
+</div>
 
 <!-- Hero -->
 <section id="hero">
-  <p class="greeting">👋 Hi, my name is</p>
-  <h1>Game Dev &<br><span>Engine Hacker</span></h1>
-  <p class="subtitle">
-    游戏开发者，痴迷底层系统与图形编程。用 C++ 和 OpenGL 构建世界，用好奇心探索引擎架构与计算机原理。
-  </p>
-  <div class="hero-cta">
+  <p class="greeting"><span id="type-greeting"></span><span class="type-cursor"></span></p>
+  <h1><span id="type-h1-line1"></span><br><span id="type-h1-line2"></span></h1>
+  <p class="subtitle" id="type-subtitle"></p>
+  <div class="hero-cta" id="hero-cta" style="opacity:0; transition: opacity 0.6s;">
     <a href="#projects" class="btn btn-primary">查看项目</a>
   </div>
 </section>
 
 <!-- Releases -->
-<section id="releases">
-  <p class="section-tag">/ releases</p>
+<section id="releases" class="reveal">
+  <p class="section-tag">$ ls ./releases/</p>
   <h2>发布记录</h2>
 
   <!-- 最新发布 -->
@@ -344,7 +405,7 @@
   </div>
 
   <!-- 之前发布 -->
-  <p class="section-tag" style="font-size:0.7rem;margin-top:32px;">/ previous</p>
+  <p class="section-tag" style="font-size:0.7rem;margin-top:32px;">$ ls ./previous/</p>
   <div class="rel-grid">
 
     <div class="rel-item">
@@ -400,8 +461,8 @@
 </section>
 
 <!-- Projects -->
-<section id="projects">
-  <p class="section-tag">/ projects</p>
+<section id="projects" class="reveal">
+  <p class="section-tag">$ ls ./projects/</p>
   <h2>项目作品</h2>
   <div class="projects-grid">
 
@@ -485,8 +546,8 @@
 </section>
 
 <!-- Source Code -->
-<section id="source">
-  <p class="section-tag">/ source</p>
+<section id="source" class="reveal">
+  <p class="section-tag">$ ls ./source/</p>
   <h2>编程源码</h2>
   <p class="subtitle" style="text-align:center;margin-top:6px;">可直接阅读的 Python 源文件，运行需安装 pygame + numpy</p>
   <div class="projects-grid" style="margin-top:24px;">
@@ -514,12 +575,42 @@
     </a>
 
   </div>
+
+  <!-- C++ 分区 -->
+  <p class="section-tag" style="margin-top:48px;font-size:0.7rem;">$ ls ./source/cpp/</p>
+  <p class="subtitle" style="text-align:center;margin-top:6px;">完整 C++ 项目源码，含 CMake 构建系统</p>
+  <div class="projects-grid" style="margin-top:24px;">
+
+    <a href="Minecraft_Source.zip" class="project-card downloadable" download>
+      <div class="project-thumb" style="background:#1a2e1a;display:flex;align-items:center;justify-content:center"><span style="font-size:36px;opacity:.5">&#x2699;</span></div>
+      <div class="project-icon">🧱</div>
+      <h3>Minecraft 克隆 · 源码</h3>
+      <p class="tech">C++ · OpenGL · 46 cpp / 55 h / 22 glsl</p>
+      <p>
+        完整体素引擎源码：区块系统、水流物理、Simplex 地形、动态光照、ImGui 调试面板。
+      </p>
+      <p class="dl-hint">⬇ 下载源码 (12MB)</p>
+    </a>
+
+    <a href="Space_Explorer_Source.zip" class="project-card downloadable" download>
+      <div class="project-thumb" style="background:#0a1a2e;display:flex;align-items:center;justify-content:center"><span style="font-size:36px;opacity:.5">🚀</span></div>
+      <div class="project-icon">🌌</div>
+      <h3>太空探索者 · 源码</h3>
+      <p class="tech">C++ · Raylib · CMake</p>
+      <p>
+        2D 太空飞行模拟游戏，场景管理、碰撞检测、粒子特效。基于 raylib 图形库。
+      </p>
+      <p class="dl-hint">⬇ 下载源码 (12KB)</p>
+    </a>
+
+  </div>
+
   <p class="more-coming">// more coming soon ...</p>
 </section>
 
 <!-- Skills -->
-<section id="skills">
-  <p class="section-tag">/ skills</p>
+<section id="skills" class="reveal">
+  <p class="section-tag">$ ls ./skills/</p>
   <h2>技术栈</h2>
   <div class="skills-container">
     <a class="skill-tag" href="https://www.baidu.com/s?wd=C%2B%2B" target="_blank" rel="noopener">C++</a>
@@ -541,8 +632,8 @@
 </section>
 
 <!-- People -->
-<section id="people">
-  <p class="section-tag">/ people</p>
+<section id="people" class="reveal">
+  <p class="section-tag">$ ls ./people/</p>
   <h2>致敬先驱</h2>
   <div class="people-grid">
 
@@ -605,8 +696,8 @@
 </section>
 
 <!-- Code -->
-<section id="code" class="code-yourself">
-  <p class="section-tag">/ code</p>
+<section id="code" class="code-yourself reveal">
+  <p class="section-tag">$ ls ./code/</p>
   <h2>你也来写程序</h2>
   <p class="cta-text">
     编程一点都不神秘。<span>从零开始，每个人都能创造自己的世界。</span>
@@ -621,6 +712,31 @@
   </div>
 </section>
 
+<!-- Forum -->
+<section id="forum" class="reveal">
+  <p class="section-tag">$ ls ./forum/</p>
+  <h2>留言板</h2>
+  <p class="subtitle" style="text-align:center;margin-top:6px;margin-bottom:32px;">欢迎留言交流，使用 GitHub 账号登录即可发言</p>
+  <script src="https://giscus.app/client.js"
+    data-repo="YOUR_USERNAME/YOUR_REPO"
+    data-repo-id="YOUR_REPO_ID"
+    data-category="Announcements"
+    data-category-id="YOUR_CATEGORY_ID"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <p style="text-align:center;margin-top:16px;font-size:0.8rem;color:var(--text-dim);">
+    ⚙ 论坛基于 Giscus · 需在 GitHub 创建仓库并开启 Discussions 功能
+  </p>
+</section>
+
 <!-- Footer -->
 <footer>
   <p>Built with <span class="accent">&lt;3</span> &mdash; 2026 LGAME</p>
@@ -630,19 +746,74 @@
 </footer>
 
 <script>
-// ---- 访客统计 ----
+// ---- 汉堡菜单 ----
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+// ---- 滚动渐入动画 ----
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('revealed');
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ---- 打字机效果 ----
+function type(element, text, speed, onDone) {
+  let i = 0;
+  element.textContent = '';
+  function tick() {
+    if (i < text.length) {
+      element.textContent += text[i];
+      i++;
+      setTimeout(tick, speed);
+    } else if (onDone) onDone();
+  }
+  tick();
+}
+
 (function(){
-  const KEY = 'lgame_visitor_count';
-  let count = parseInt(localStorage.getItem(KEY) || '0') + 1;
-  localStorage.setItem(KEY, count);
-  document.getElementById('visitorCount').textContent = count;
+  const el_g = document.getElementById('type-greeting');
+  const el_l1 = document.getElementById('type-h1-line1');
+  const el_l2 = document.getElementById('type-h1-line2');
+  const el_sub = document.getElementById('type-subtitle');
+  const el_cta = document.getElementById('hero-cta');
+
+  type(el_g, '> Hello, my name is', 40, () => {
+    type(el_l1, 'Game Dev &', 60, () => {
+      type(el_l2, 'Engine Hacker', 60, () => {
+        type(el_sub, '游戏开发者，痴迷底层系统与图形编程。用 C++ 和 OpenGL 构建世界，用好奇心探索引擎架构与计算机原理。', 30, () => {
+          el_cta.style.opacity = '1';
+        });
+      });
+    });
+  });
+})();
+
+// ---- 访客统计(真实服务端) ----
+(function(){
+  const el = document.getElementById('visitorCount');
+  const NS = 'lgame-site';
+  fetch('https://api.countapi.xyz/hit/' + NS + '/visits')
+    .then(r => r.json()).then(d => { el.textContent = d.value; })
+    .catch(() => { el.textContent = '...'; });
 })();
 
 // ---- 二进制粒子背景 ----
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
-const COUNT = 80;
+const COUNT = 40;
 
 function resize() {
   canvas.width = window.innerWidth;
